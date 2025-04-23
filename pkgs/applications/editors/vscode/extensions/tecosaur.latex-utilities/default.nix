@@ -6,7 +6,7 @@
   texlivePackages,
 }:
 
-vscode-utils.buildVscodeMarketplaceExtension (finalAttrs: {
+vscode-utils.buildVscodeMarketplaceExtension rec {
   mktplcRef = {
     name = "latex-utilities";
     publisher = "tecosaur";
@@ -23,7 +23,7 @@ vscode-utils.buildVscodeMarketplaceExtension (finalAttrs: {
 
   postInstall = ''
     cd "$out/$installPrefix"
-    echo -n ${finalAttrs.version} > VERSION
+    echo -n ${mktplcRef.version} > VERSION
     jq '.contributes.configuration.properties."latex-utilities.countWord.path".default = "${texlivePackages.texcount}/bin/texcount"' package.json | sponge package.json
   '';
 
@@ -35,4 +35,4 @@ vscode-utils.buildVscodeMarketplaceExtension (finalAttrs: {
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ jeancaspar ];
   };
-})
+}
